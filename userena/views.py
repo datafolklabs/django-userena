@@ -116,7 +116,7 @@ def activate(request, username, activation_key,
 
     :param success_url:
         String containing the URL where the user should be redirected to after
-        a succesfull activation. Wil replace ``%(username)s`` with string
+        a succesfull activation. Will replace ``%(username)s`` with string
         formatting if supplied. If ``success_url`` is left empty, will direct
         to ``userena_profile_detail`` view.
 
@@ -322,7 +322,7 @@ def signin(request, auth_form=AuthenticationForm,
 
 @secure_required
 @permission_required_or_403('change_user', (User, 'username', 'username'))
-def email_change(request, username, form=ChangeEmailForm,
+def email_change(request, username, email_form=ChangeEmailForm,
                  template_name='userena/email_form.html', success_url=None,
                  extra_context=None):
     """
@@ -331,7 +331,7 @@ def email_change(request, username, form=ChangeEmailForm,
     :param username:
         String of the username which specifies the current account.
 
-    :param form:
+    :param email_form:
         Form that will be used to change the email address. Defaults to
         :class:`ChangeEmailForm` supplied by userena.
 
@@ -366,10 +366,10 @@ def email_change(request, username, form=ChangeEmailForm,
     """
     user = get_object_or_404(User, username__iexact=username)
 
-    form = ChangeEmailForm(user)
+    form = email_form(user)
 
     if request.method == 'POST':
-        form = ChangeEmailForm(user,
+        form = email_form(user,
                                request.POST,
                                request.FILES)
 
